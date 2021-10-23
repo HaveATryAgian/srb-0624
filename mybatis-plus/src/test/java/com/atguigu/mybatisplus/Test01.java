@@ -1,5 +1,6 @@
 package com.atguigu.mybatisplus;
 
+import com.atguigu.mybatisplus.entity.User;
 import com.atguigu.mybatisplus.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class Test01 {
     public void test01(){
         Integer count = userMapper.selectCount(null);
         System.out.println(count);
+    }
+
+    @Test
+    public void test02(){
+        User user = userMapper.selectById(1L);
+        System.out.println(user);
     }
 
 }
