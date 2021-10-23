@@ -19,7 +19,7 @@ import java.util.List;
 public class Test02 {
     @Autowired
     UserService userService;
-
+//哈哈哈
     @Test
     public void test01(){
         List<User> lists = userService.list();
