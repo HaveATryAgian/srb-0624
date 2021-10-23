@@ -27,7 +27,7 @@ public class Test01 {
     @Test
     public void test02(){
         User user = userMapper.selectById(1L);
-        System.out.println(user);
+        System.out.println("user:"+user);
     }
 
 }
