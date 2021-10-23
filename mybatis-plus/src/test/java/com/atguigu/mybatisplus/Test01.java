@@ -28,6 +28,7 @@ public class Test01 {
     public void test02(){
         User user = userMapper.selectById(1L);
         System.out.println("user:"+user);
+        System.out.println("userrrr:"+user);
     }
 
 }
