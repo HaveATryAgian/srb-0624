@@ -31,8 +31,8 @@ public class Test03 {
         List<User> lists = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             User user = new User();
-            user.setName("Tom"+i);
-            user.setAge(20+i);
+            user.setName("halen"+i);
+            user.setAge(10+i);
             lists.add(user);
         }
         boolean saveBatch = userService.saveBatch(lists);
