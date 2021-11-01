@@ -10,9 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -89,7 +91,10 @@ public class AdminIntegralGradeController {
 
     @ApiOperation("test")
     @GetMapping("/test")
-    public R test(){
-            return R.ok().data("test","后端的test!!!");
+    public R test(HttpServletRequest request){
+        String remoteAddr = request.getRemoteAddr();
+        String header = request.getHeader("X-forwarded-for");
+        return R.ok().data("test","后端的test!!!");
     }
+
 }
