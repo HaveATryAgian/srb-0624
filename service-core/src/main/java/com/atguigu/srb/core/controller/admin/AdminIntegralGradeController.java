@@ -9,6 +9,7 @@ import com.atguigu.srb.result.ResponseEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +25,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/core")
 @Api("srb后台系统")
+@Slf4j
+@CrossOrigin
 public class AdminIntegralGradeController {
 
     @Resource
@@ -32,6 +35,9 @@ public class AdminIntegralGradeController {
     @ApiOperation("积分等级列表")
     @GetMapping("/list")
     public R listAll(){
+        log.info("info级别日志");
+        log.warn("warn级别日志");
+        log.error("error级别日志");
         List<IntegralGrade> list = integralGradeService.list();
         R r = R.ok().data("list", list);
         return r;
@@ -79,5 +85,11 @@ public class AdminIntegralGradeController {
            }else {
                return R.error().message("数据不存在");
            }
+    }
+
+    @ApiOperation("test")
+    @GetMapping("/test")
+    public R test(){
+            return R.ok().data("test","后端的test!!!");
     }
 }

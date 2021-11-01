@@ -13,4 +13,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface IntegralGradeMapper extends BaseMapper<IntegralGrade> {
 
-}
+        }
