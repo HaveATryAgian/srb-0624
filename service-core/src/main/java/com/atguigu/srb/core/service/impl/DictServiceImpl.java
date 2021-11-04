@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ import java.util.List;
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
     @Autowired
     DictMapper dictMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Transactional(rollbackFor = {Exception.class})
     @Override
@@ -51,22 +54,34 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
 
     @Override
     public List<Dict> listByParentId(Long id) {
-        QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("parent_id",id);
-        List<Dict> dictList = dictMapper.selectList(queryWrapper);
-
-        for (Dict dict : dictList) {
-            Long dictId = dict.getId();
-            QueryWrapper<Dict> queryWrapperTest = new QueryWrapper<>();
-            queryWrapperTest.eq("parent_id",dictId);
-            Integer integer = dictMapper.selectCount(queryWrapper);
-            if (integer > 0){
-                dict.setHasChildren(true);
+        long start = System.currentTimeMillis();
+        //查询redis
+        List<Dict> dicts = (List<Dict>)redisTemplate.opsForValue().get("srb:core:dictList:" + id);// 查询redis中的dict集合,dict:id:list
+        if(dicts == null){
+            //查询db
+            QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("parent_id",id);
+            dicts = dictMapper.selectList(queryWrapper);
+            if (dicts != null){
+                //同步redis
+                redisTemplate.opsForValue().set("\"srb:core:dictList:\" + id",dicts);
             }
-
-
         }
 
-        return dictList;
+        if(dicts != null) {
+            for (Dict dict : dicts) {
+                Long dictId = dict.getId();
+                QueryWrapper<Dict> queryWrapperTest = new QueryWrapper<>();
+                queryWrapperTest.eq("parent_id",dictId);
+                Integer integer = dictMapper.selectCount(queryWrapperTest);
+                if (integer > 0){
+                    dict.setHasChildren(true);
+                }
+            }
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("花费时间："+(end-start));
+
+        return dicts;
     }
 }
