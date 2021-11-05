@@ -10,6 +10,8 @@
         <module>service-core</module>
         <module>alibaba-easyexcel</module>
         <module>service-sms</module>
+        <module>service-oss</module>
+        <module>jwt</module>
     </modules>
 
     <parent>
