@@ -8,6 +8,10 @@
         <module>guigu-common</module>
         <module>service-base</module>
         <module>service-core</module>
+        <module>alibaba-easyexcel</module>
+        <module>service-sms</module>
+        <module>service-oss</module>
+        <module>jwt</module>
     </modules>
 
     <parent>
@@ -189,6 +193,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>
